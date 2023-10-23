@@ -6,6 +6,16 @@
     <title>Document</title>
 </head>
 <body>
-    <p><%= title %></p>
+    <form action="/" method="post">
+        <input type="text" placeholder="Search" name="search">
+    </form>
+
+    <% if (locals.response) { %>
+        <% response.data.items.forEach(video => { %>
+            <% if (video.id.kind === 'youtube#video') { %>
+                <img src=<%= video.snippet.thumbnails.high.url %> />
+            <% } %>
+        <% }); %>
+    <% } %>
 </body>
 </html>

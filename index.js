@@ -5,6 +5,8 @@ import { readFile } from 'node:fs';
 const app = express()
 const port = 3000
 
+app.use(express.urlencoded())
+
 let key = ''
 
 readFile('key.json', 'utf8', (err, data) => {
@@ -12,15 +14,21 @@ readFile('key.json', 'utf8', (err, data) => {
   key = JSON.parse(data).key;
 });
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
+    res.render('index.ejs')
+})
+
+app.post('/', async (req, res) => {
+    const querry = req.body.search
+
     try {
-        const response = await axios.get(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=cat&key=${key}`)
-        res.render('index.ejs', {title: response.data.items[0].snippet.title})
+        const response = await axios.get(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${querry}&key=${key}`)
+        console.log(response.data.items[0].snippet.thumbnails.high)
+        res.render('index.ejs', {response: response})
     } catch(error) {
         console.error(error)
         res.render('index.ejs', {title: 'error'})
     }
-    console.log()
 })
 
 app.listen(port, () => {

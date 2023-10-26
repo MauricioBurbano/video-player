@@ -17,5 +17,9 @@
             <% } %>
         <% }); %>
     <% } %>
+
+    <% if (locals.error) { %>
+        <p><%= error %></p>
+    <% } %>
 </body>
 </html>

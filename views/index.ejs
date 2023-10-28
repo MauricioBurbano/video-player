@@ -11,9 +11,14 @@
     </form>
 
     <% if (locals.response) { %>
-        <% response.data.items.forEach(video => { %>
+        <% response.forEach(video => { %>
             <% if (video.id.kind === 'youtube#video') { %>
-                <img src=<%= video.snippet.thumbnails.high.url %> />
+                <form action="/video" method="post">
+                    <input name="videoId" value=<%= video.id.videoId %> style="display: none;" />
+                    <button>
+                        <img src=<%= video.snippet.thumbnails.high.url %> />
+                    </button>
+                </form>
             <% } %>
         <% }); %>
     <% } %>
